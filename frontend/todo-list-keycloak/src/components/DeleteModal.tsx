@@ -1,10 +1,15 @@
+'use client'
+
 import { getTasks } from "@/api/getTasks";
 import { TasksContext } from "@/app/context/Task.context";
+import instanceAxios from "@/httpService/axios";
+import { useKeycloak } from "@react-keycloak/web";
 import { useContext } from "react";
 
 export default function DeleteModal({ setIsOpenModal, _id }: { setIsOpenModal: (arg0: boolean) => void; _id: string; }) {
 
   const { dispatch } = useContext(TasksContext);
+  const { keycloak } = useKeycloak();
 
   const handleCloseModal = () => {
     setIsOpenModal(false);
@@ -12,18 +17,15 @@ export default function DeleteModal({ setIsOpenModal, _id }: { setIsOpenModal: (
 
   const handleDelete = async () => {
     try {
-      const res = await fetch(`http://localhost:3000/delete-task/${_id}`, {
+      const axios = instanceAxios(keycloak);
+      await axios.delete(`http://localhost:3000/delete-task/${_id}`, {
         method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        }
       })
-      const data = await res.json();
       dispatch!({ type: 'DELETE_TASK', payload: { _id } })
     } catch (error) {
       console.log(error);
     }
-    getTasks(dispatch);
+    getTasks(dispatch, keycloak);
   }
 
   return (

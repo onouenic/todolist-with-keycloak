@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Headers,
   HttpStatus,
   Param,
   Post,
@@ -34,7 +35,6 @@ export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
   @Get()
-  @Public()
   async findAll(@Res() res: Response) {
     try {
       const tasks = await this.taskService.findAll();
@@ -45,7 +45,6 @@ export class TaskController {
   }
 
   @Post()
-  @Public()
   async createTask(@Res() res: Response, @Body() task: CreateTaskDto) {
     try {
       const newTask = await this.taskService.createTask(task);

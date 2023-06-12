@@ -1,5 +1,9 @@
+'use client'
+
 import { getTasks } from "@/api/getTasks";
 import { TasksContext } from "@/app/context/Task.context";
+import instanceAxios from "@/httpService/axios";
+import { useKeycloak } from "@react-keycloak/web";
 import { useContext, useRef, useState } from "react";
 
 export default function FormTask() {
@@ -7,6 +11,7 @@ export default function FormTask() {
   const [name, setName] = useState('');
   const { dispatch } = useContext(TasksContext);
   const [ error, setError ] = useState('');
+  const { keycloak } = useKeycloak();
 
   const handleChange = (e: { target: { value: string; }; }) => {
     const { value } = e.target;
@@ -17,19 +22,18 @@ export default function FormTask() {
     e.preventDefault();
     if (name.length <= 0) return setError('Digite o nome da tarefa');
     try {
-      const res = await fetch('http://localhost:3000/create-task', {
+      const axios = instanceAxios(keycloak);
+      await axios.post('http://localhost:3000/create-task', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ name })
+        body: JSON.stringify({ name }),
       })
-      const data = await res.json();
-      dispatch!({ type: 'ADD_TASK', payload: data })
+        .then(response => {
+          dispatch!({ type: 'ADD_TASK', payload: response.data })
+        })
     } catch (error) {
       console.log(error);
     }
-    getTasks(dispatch);
+    getTasks(dispatch, keycloak);
     setError('');
   }
 

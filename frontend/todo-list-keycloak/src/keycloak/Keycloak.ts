@@ -1,6 +1,8 @@
+'use client'
+
 import Keycloak, { KeycloakConfig } from 'keycloak-js';
 
-const keycloakConfig: KeycloakConfig = {
+export const keycloakConfig: KeycloakConfig = {
   clientId: process.env.NEXT_PUBLIC_KEYCLOAK_CLIENT_ID!,
   realm: process.env.NEXT_PUBLIC_KEYCLOAK_REALM!,
   url: process.env.NEXT_PUBLIC_KEYCLOAK_URL,

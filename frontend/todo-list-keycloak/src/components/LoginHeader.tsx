@@ -1,6 +1,10 @@
-import { keycloak } from "@/keycloak/Keycloak";
+'use client'
+
+import { useKeycloak } from "@react-keycloak/web";
 
 export default function LoginHeader() {
+
+  const { keycloak } = useKeycloak();
 
   return (
     <div>

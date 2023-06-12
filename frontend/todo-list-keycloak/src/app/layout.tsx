@@ -1,3 +1,4 @@
+import KeycloakProvider from "@/providers/KeycloakProvider";
 import "tailwindcss/tailwind.css";
 
 export default function RootLayout({
@@ -8,7 +9,9 @@ export default function RootLayout({
   return (
     <html>
       <body className="h-screen">
-        {children}
+        <KeycloakProvider>
+          {children}
+        </KeycloakProvider>
       </body>
     </html>
   )

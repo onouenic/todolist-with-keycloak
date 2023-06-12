@@ -8,6 +8,7 @@ import { ITaskProps } from "@/interfaces/TaskProps.interface";
 import { useKeycloak } from "@react-keycloak/web";
 import { Dispatch, useEffect, useReducer, useState } from "react";
 import { TasksContext } from "../context/Task.context";
+import httpService from "@/httpService/axios";
 
 function taskReducer(state: ITaskProps | ITaskProps[], action: ITaskAction): ITaskProps[] {
   switch(action.type) {
@@ -40,8 +41,13 @@ export default function TaskList() {
   const { keycloak, initialized } = useKeycloak();
 
   useEffect(() => {
-    getTasks(setFetchedTasks);
-  }, [tasks])
+    if (initialized) {
+      // keycloak.login()
+    }
+    if (keycloak.authenticated) {
+      getTasks(setFetchedTasks, keycloak);
+    }
+  }, [initialized, keycloak.authenticated])
 
   if (!initialized) {
     return <div>Loading...</div>

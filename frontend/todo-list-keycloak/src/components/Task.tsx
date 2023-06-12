@@ -1,26 +1,31 @@
+'use client'
+
 import { useContext, useState } from "react";
 import DeleteModal from "./DeleteModal";
 import { TaskType } from "@/app/types/TaskProps.type";
 import { TasksContext } from "@/app/context/Task.context";
+import { useKeycloak } from "@react-keycloak/web";
+import instanceAxios from "@/httpService/axios";
+import { getTasks } from "@/api/getTasks";
 
 export default function Task({ _id, index, name, completed }: TaskType) {
 
   const { dispatch } = useContext(TasksContext);
   const [ isOpenModal, setIsOpenModal ] = useState(false);
+  const { keycloak } = useKeycloak();
 
   const handleCompleted = async () => {
     try {
-      await fetch(`http://localhost:3000/update-task/${_id}`, {
+      const axios = instanceAxios(keycloak);
+      await axios.put(`http://localhost:3000/update-task/${_id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ completed: !completed })
+        body: JSON.stringify({ completed: !completed }),
       })
       dispatch!({ type: 'UPDATE_TASK', payload: { _id, completed: !completed } })
     } catch (error) {
       console.log(error);
     }
+    getTasks(dispatch, keycloak);
   }
 
   const handleOpenModal = () => {
