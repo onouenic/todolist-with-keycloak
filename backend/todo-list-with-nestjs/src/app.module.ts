@@ -6,7 +6,7 @@ import { KeycloakModule } from './keycloak/keycloak.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://root:root@0.0.0.0:27017/tasklist'),
+    MongooseModule.forRoot('/* mongodb://username:password@host:port/dbname */'),
     ConfigModule.forRoot(),
     TaskModule,
     KeycloakModule,
