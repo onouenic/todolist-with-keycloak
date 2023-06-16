@@ -12,10 +12,10 @@ import {
 @Module({
   imports: [
     KeycloakConnectModule.register({
-      authServerUrl: 'https://keycloak.homologacao.devsys.nic.br/',
-      realm: 'devsysnic',
-      clientId: 'service-tasks',
-      secret: 'QUnbbFpuXljaz0gsxS76BfTknOe9KU7l',
+      authServerUrl: '',
+      realm: '',
+      clientId: '',
+      secret: '',
       policyEnforcement: PolicyEnforcementMode.PERMISSIVE,
       tokenValidation: TokenValidation.ONLINE,
     }),
